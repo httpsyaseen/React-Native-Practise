@@ -1,74 +1,68 @@
-// App.js
-import React, { useState } from "react";
-import { View } from "react-native";
-import TodoList from "./TodoList";
-import { View, TextInput, Button } from "react-native";
-import { View, FlatList } from "react-native";
-import { Text, TouchableOpacity } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-const AddTodoForm = ({ onAdd }) => {
-  const [text, setText] = useState("");
+export default function App() {
+  const [goal, setGoal] = useState([]);
+  const [enteredText, setEnteredText] = useState("");
 
-  const handleAdd = () => {
-    if (text.trim()) {
-      onAdd(text);
-      setText("");
-    }
-  };
+  function handleInputText(text) {
+    setEnteredText(text);
+  }
+
+  function handleClickGoal() {
+    setGoal((goals) => [...goals, enteredText]);
+  }
 
   return (
-    <View>
-      <TextInput
-        value={text}
-        onChangeText={(value) => setText(value)}
-        placeholder="Enter a task..."
-      />
-      <Button title="Add Task" onPress={handleAdd} />
+    <View style={styles.appContainer}>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="write something"
+          style={styles.input}
+          onChangeText={handleInputText}
+        />
+        <Button title="My Goal" onPress={handleClickGoal} />
+      </View>
+      <View style={styles.list}>
+        {goal.length > 0 ? (
+          goal.map((mygoal, index) => {
+            return <Text key={index}>{mygoal}</Text>;
+          })
+        ) : (
+          <Text>Your Goals Here</Text>
+        )}
+      </View>
     </View>
   );
-};
+}
 
-// TodoList.js
+const styles = StyleSheet.create({
+  appContainer: {
+    paddingTop: 70,
+  },
 
-const TodoList = ({ todos, onDelete }) => {
-  return (
-    <View>
-      <FlatList
-        data={todos}
-        renderItem={({ item }) => <TodoItem item={item} onPress={onDelete} />}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
-  );
-};
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    borderBottomColor: "gray",
+    borderBottomWidth: 2,
+    paddingBottom: 50,
+  },
 
-// TodoItem.js
+  input: {
+    height: 40,
+    width: "70%",
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
+  },
 
-const TodoItem = ({ item, onPress }) => {
-  return (
-    <TouchableOpacity onPress={() => onPress(item.id)}>
-      <Text>{item.text}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const App = () => {
-  const [todos, setTodos] = useState([]);
-
-  const handleAddTodo = (text) => {
-    setTodos([...todos, { id: Date.now(), text }]);
-  };
-
-  const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  return (
-    <View>
-      <AddTodoForm onAdd={handleAddTodo} />
-      <TodoList todos={todos} onDelete={handleDeleteTodo} />
-    </View>
-  );
-};
-
-export default App;
+  list: {
+    paddingTop: 20,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
