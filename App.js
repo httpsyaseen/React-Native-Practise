@@ -1,15 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  Pressable,
-} from "react-native";
-
-import { v4 as uuidv4 } from "react-native-get-random-values";
+import { StyleSheet, View, TextInput, Button } from "react-native";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [goal, setGoal] = useState([]);
@@ -40,17 +31,7 @@ export default function App() {
         />
         <Button title="My Goal" onPress={handleClickGoal} />
       </View>
-      <View style={styles.list}>
-        {goal.map((mygoal, index) => {
-          return (
-            <Pressable onPress={() => handleDeleteItem(mygoal.id)} key={index}>
-              <Text style={styles.item} key={index}>
-                {mygoal.text}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      <GoalItem handleDeleteItem={handleDeleteItem} goal={goal} />
     </View>
   );
 }
