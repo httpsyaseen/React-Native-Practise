@@ -17,21 +17,20 @@ export default function GoalItem({ handleDeleteItem, goal }) {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    paddingTop: 20,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   item: {
-    backgroundColor: "purple",
-    padding: 4,
+    backgroundColor: "#00BFFF",
+    padding: 8,
     color: "white",
     fontSize: 20,
     marginTop: 4,
     borderRadius: 10,
-    width: "70%",
     textAlign: "center",
+    fontWeight: "bold",
+  },
+
+  list: {
+    flexDirection: "column",
+    marginTop: 30,
+    marginHorizontal: 20,
   },
 });
